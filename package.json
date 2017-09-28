@@ -1,0 +1,18 @@
+{
+  "name": "logger",
+  "version": "0.0.1",
+  "description": "colorful logger plugin",
+  "main": "index.js",
+  "scripts": {
+    "build": "NODE_ENV=production webpack"
+  },
+  "keywords": [
+    "log",
+    "colorful"
+  ],
+  "author": "woolson",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^3.6.0"
+  }
+}
