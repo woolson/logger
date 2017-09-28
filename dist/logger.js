@@ -193,8 +193,8 @@ Logger.prototype.renderTemp = function (type, msg, title) {
 	}
 }
 
-Logger.prototype.install = function (Vue, config) {
-	var logger = new Logger(options)
+Logger.install = function (Vue, config) {
+	var logger = new Logger(config)
 	Object.defineProperty(Vue.prototype, '$log', {
 		get: function () { return logger.log.bind(logger) },
 	})

@@ -1,6 +1,6 @@
 {
-  "name": "logger",
-  "version": "0.0.1",
+  "name": "@woolson/logger",
+  "version": "0.0.2",
   "description": "colorful logger plugin",
   "main": "index.js",
   "scripts": {
