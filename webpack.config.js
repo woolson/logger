@@ -1,45 +1,32 @@
 var webpack = require('webpack')
 var path = require('path')
-var config = {}
 
-function generateConfig(name) {
-	var uglify = name.indexOf('min') > -1
-	var config = {
-		entry: path.join(__dirname, 'index.js'),
-		output: {
-			path: path.join(__dirname, 'dist'),
-			filename: name + '.js',
-			sourceMapFilename: name + '.map',
-			library: 'Logger',
-			libraryTarget: 'umd'
-		},
-		node: {
-			process: false
-		},
-		devtool: 'source-map'
-	}
+var isProduction = process.env.NODE_ENV === 'production'
+var name = isProduction ? 'logger.min' : 'logger'
+var plugins = []
 
-	config.plugins = [
-		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+if(isProduction) {
+	plugins.push(
+		new webpack.optimize.UglifyJsPlugin({
+			compressor: {
+				warnings: false
+			}
 		})
-	]
-
-	if (uglify) {
-		config.plugins.push(
-			new webpack.optimize.UglifyJsPlugin({
-				compressor: {
-					warnings: false
-				}
-			})
-		)
-	}
-
-	return config
+	)
 }
 
-// ['logger', 'logger.min'].forEach(function (key) {
-// 	config[key] = 
-// })
-
-module.exports = generateConfig('logger')
+module.exports = {
+	entry: path.join(__dirname, 'index.js'),
+	output: {
+		path: path.join(__dirname, 'dist'),
+		filename: name + '.js',
+		sourceMapFilename: name + '.map',
+		library: 'Logger',
+		libraryTarget: 'umd'
+	},
+	node: {
+		process: false
+	},
+	devtool: 'source-map',
+	plugins,
+}

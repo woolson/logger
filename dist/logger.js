@@ -159,16 +159,16 @@ Logger.prototype.renderTemp = function (type, msg, title) {
 			'#F78AE0',
 		]
 		var dashs = '—'.repeat(20)
-		var debugTitle = `%c${dashs}${title}[${date}]${dashs}\n%c%o%c%s`
+		var debugTitle = '%c' + dashs + title + date + dashs + '\n%c%o%c%s'
 		var debugColor = debugColors[(Math.random() * 5).toFixed(0)]
 
 		return [
 			debugTitle,
-			`font-size: ${this.debugTitleSize}px;color:${debugColor}`,
+			'font-size: ' + this.debugTitleSize + 'px;color: '+ debugColor,
 			'',
 			msg,
-			`font-size: ${this.debugTitleSize}px;color: ${debugColor}`,
-			`\n${'—'.repeat(debugTitle.length - 9)}`,
+			'font-size: ' + this.debugTitleSize + 'px;color: '+ debugColor,
+			'\n' + '—'.repeat(debugTitle.length - 9),
 		]
 	}else {
 		var colors = {
@@ -177,10 +177,10 @@ Logger.prototype.renderTemp = function (type, msg, title) {
 			error: '#F25353',
 		}
 		var temp = [
-			`%c ${type.toUpperCase()} %c%s`,
-			`color: #FFFFFF; background: ${colors[type]}`,
+			'%c ' + type.toUpperCase() + ' %c%s',
+			'color: #FFFFFF; background: ' + colors[type],
 			'text-decoration: underline',
-			this.dateTemp ? `[${date}]` : '',
+			this.dateTemp ? '[' + date + ']' : '',
 			msg,
 		]
 
@@ -193,6 +193,22 @@ Logger.prototype.renderTemp = function (type, msg, title) {
 	}
 }
 
+Logger.prototype.install = function (Vue, config) {
+	var logger = new Logger(options)
+	Object.defineProperty(Vue.prototype, '$log', {
+		get: function () { return logger.log.bind(logger) },
+	})
+	Object.defineProperty(Vue.prototype, '$warn', {
+		get: function () { return logger.warn.bind(logger) },
+	})
+	Object.defineProperty(Vue.prototype, '$error', {
+		get: function () { return logger.error.bind(logger) },
+	})
+	Object.defineProperty(Vue.prototype, '$debug', {
+		get: function () { return logger.debug.bind(logger) },
+	})
+}
+
 module.exports = Logger
 
 
@@ -201,11 +217,13 @@ module.exports = Logger
 /***/ (function(module, exports) {
 
 var moment = {
-	getCurrent: function (template = 'YYYY-MM-DD') {
+	getCurrent: function (template) {
+		template = template ? template : 'YYYY-MM-DD'
 		const date = new Date()
 		return this.formatter(date, template)
 	},
-	formatter: function (date, template = 'YYYY-MM-DD') {
+	formatter: function (date, template) {
+		template = template ? template : 'YYYY-MM-DD'
 		const newDate = new Date(date)
 		const fullYear = newDate.getFullYear()
 		const year = String(fullYear).substr(2)
@@ -230,7 +248,7 @@ var moment = {
 			{ key: 'S', value: second },					// 2秒
 		]
 
-		items.forEach(item => {
+		items.forEach(function (item) {
 			template = template.replace(item.key, item.value)
 		})
 
