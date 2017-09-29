@@ -4,57 +4,62 @@
 
 ## Installing
 
-Using npm:
+使用npm:
 
 ```bash
 $ npm install --save-dev @woolson/logger
 ```
 
-Using original:
+HTML引入:
 
 ```html
 <script src="../somepath/logger.min.js"></script>
 ```
 
+## TODO
+
+- 部分细节优化
+- 收集错误信息到服务器
+
 ## Config
 
-- #####`debugTitleSize`
+- `debugTitleSize`
 	debug模式 title的字体大小，默认大小`14`
-- #####`colored`
+- `colored`
 	是否使用颜色，默认使用`true`
-- #####`dateTemp`
+- `dateTemp`
 	`log`的时间格式，默认`HH:mm:SS`，具体配置可参考 [moment](http://momentjs.cn/docs/#/displaying/)（部分支持）
-- #####`logLevel`
+- `logLevel`
 	控制哪些log是可以显示出来，可用于区别本地和线上，默认所有  
 	可选 `log`,`warn`,`error`（`debug`）在`log`等级才会显示
 
 ## Methods
 
-- #####`log`
+- `log`
 
 ```javascript
 logger.log('Hello world')
 ```
 
-<img src="./example/log.png" width="300">
+<img src="./static/images/log.png" width="300">
 
-- #####`warn`
+- `warn`
 
 ```javascript
 logger.warn('Hello world')
 ```
 
-<img src="./example/warn.png" width="300">
+<img src="./static/images/warn.png" width="300">
 
-- #####`error`
+- `error`
 
 ```javascript
 logger.error('Hello world')
 ```
 
-<img src="./example/error.png" width="300">
+<img src="./static/images/error.png" width="300">
 
-- #####`debug`
+- `debug`
 
 可在`debug`时候使用，颜色随机以便区分区域
 
@@ -63,8 +68,7 @@ logger.debug('Hello world')
 logger.debug('订单数据', {obj: 123})
 ```
 
-<img src="./example/debug.png" width="600">
-
+<img src="./static/images/debug.png" width="600">
 
 ## Example
 

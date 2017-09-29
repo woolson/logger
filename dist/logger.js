@@ -105,6 +105,41 @@ function Logger (config) {
 	this.logLevel = config.logLevel
 		? this.getLevelFromName(config.logLevel)
 		: 0
+
+	// 是否启用捕获异常
+	if (config.catchConfig) {
+		this.catchConfig = config.catchConfig
+		this.catchError()
+	}
+}
+
+// 配置报错把错误信息提交到服务器
+Logger.prototype.catchError = function () {
+	var that = this
+	if (window && typeof window === 'object') {
+		window.onerror = function (msg, url, line, col, error) {
+			var errorInfo = {
+				msg: msg,
+				url: url,
+				line: line,
+				col: col,
+			}
+			that.send2Server(errorInfo)
+		}
+	}
+}
+
+// 发送到远程log
+Logger.prototype.send2Server = function (data) {
+	var xmlhttp = null
+	var requestUrl = this.catchConfig.url
+
+	if (window.XMLHttpRequest) xmlhttp = new XMLHttpRequest()
+	else xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+
+	xmlhttp.open('post', requestUrl, true)
+	xmlhttp.setRequestHeader("Content-type","application/json;charset=utf-8")
+	xmlhttp.send(JSON.stringify(data))
 }
 
 // 信息log
@@ -126,9 +161,25 @@ Logger.prototype.error = function (msg) {
 }
 
 // debug
-Logger.prototype.debug = function (title, msg) {
+Logger.prototype.debug = function () {
 	if(this.logLevel > 1) return
+	var length = arguments.length
+	var msg = ''
+	var title = ''
+	if(length > 1) {
+		title = arguments[0]
+		msg = arguments[1]
+	}else {
+		msg = arguments[0]
+	}
 	console.log.apply(null, this.renderTemp('debug', msg, title))
+}
+
+// 发送到server端的log
+Logger.prototype.server = function (msg) {
+	if(this.catchConfig && this.catchConfig.url) {
+		this.send2Server({msg: msg})
+	}
 }
 
 // 设置全局log的等级
@@ -140,8 +191,7 @@ Logger.prototype.getLevelFromName = function (levelName) {
 	var newLevel = this.LEVELS.indexOf(levelName)
 
 	if(newLevel === -1) {
-		this.error('level error')
-		return
+		return this.error('level error')
 	}
 
 	return newLevel

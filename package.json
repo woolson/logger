@@ -4,6 +4,7 @@
   "description": "colorful logger plugin",
   "main": "index.js",
   "scripts": {
+    "dev": "supervisor node server.js",
     "build": "webpack && NODE_ENV=production webpack"
   },
   "keywords": [
@@ -13,6 +14,8 @@
   "author": "woolson",
   "license": "ISC",
   "devDependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.0",
     "webpack": "^3.6.0"
   }
 }
