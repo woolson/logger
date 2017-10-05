@@ -95,6 +95,8 @@ function Logger (config) {
 	]
 	// debug模式 title的字体大小
 	this.debugTitleSize = config.debugTitleSize || 14
+	// 传入后端的错误接口
+	this.catchErrorUrl = config.catchErrorUrl
 	// 是否使用颜色
 	this.colored = config.colored === false ? false : true
 	// log的时间格式
@@ -107,10 +109,7 @@ function Logger (config) {
 		: 0
 
 	// 是否启用捕获异常
-	if (config.catchConfig) {
-		this.catchConfig = config.catchConfig
-		this.catchError()
-	}
+	if (this.catchErrorUrl) this.catchError()
 }
 
 // 配置报错把错误信息提交到服务器
@@ -132,7 +131,7 @@ Logger.prototype.catchError = function () {
 // 发送到远程log
 Logger.prototype.send2Server = function (data) {
 	var xmlhttp = null
-	var requestUrl = this.catchConfig.url
+	var requestUrl = this.catchErrorUrl
 
 	if (window.XMLHttpRequest) xmlhttp = new XMLHttpRequest()
 	else xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")

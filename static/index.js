@@ -4,4 +4,5 @@ var logger = new Logger({
 	}
 })
 
-logger.server('测试')
+// logger.server('测试')
+a = b

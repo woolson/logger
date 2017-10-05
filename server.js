@@ -27,4 +27,4 @@ app.post('/api/catchError', function (req, res) {
 })
 
 app.listen(PORT)
-console.log('Server at port: ', PORT)
+console.log(`Server started: http://localhost:${PORT}`)

@@ -1,0 +1,32 @@
+===============2017-10-05 22:12:34===============
+Error: 测试;
+ErrorFile: undefined;
+ErrorLine: undefined;
+ErrorCol: undefined;
+=================================================
+
+
+===============2017-10-05 22:13:09===============
+Error: Uncaught ReferenceError: b is not defined;
+ErrorFile: http://localhost:8081/static/index.js;
+ErrorLine: 8;
+ErrorCol: 1;
+=================================================
+
+
+===============2017-10-05 22:21:08===============
+Error: Uncaught ReferenceError: b is not defined;
+ErrorFile: http://localhost:8081/static/index.js;
+ErrorLine: 8;
+ErrorCol: 1;
+=================================================
+
+
+===============2017-10-05 22:21:22===============
+Error: Uncaught ReferenceError: b is not defined;
+ErrorFile: http://localhost:8081/static/index.js;
+ErrorLine: 8;
+ErrorCol: 1;
+=================================================
+
+

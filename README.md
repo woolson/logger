@@ -1,10 +1,10 @@
-# JS Logger
+# JS Logger | JS日志
 
 > 好看的、好用的、清晰的log信息
 
 ## Installing
 
-使用npm:
+使用npm（推荐）:
 
 ```bash
 $ npm install --save-dev @woolson/logger
@@ -16,72 +16,7 @@ HTML引入:
 <script src="../somepath/logger.min.js"></script>
 ```
 
-## TODO
-
-- 部分细节优化
-- 收集错误信息到服务器
-
-## Config
-
-- `debugTitleSize`: `number`
-	debug模式 title的字体大小，默认大小`14`
-- `colored`: `boolean`
-	是否使用颜色，默认使用`true`
-- `dateTemp`: `string`
-	`log`的时间格式，默认`HH:mm:SS`，具体配置可参考 [moment](http://momentjs.cn/docs/#/displaying/)（部分支持）
-- `logLevel`
-	控制哪些log是可以显示出来，可用于区别本地和线上，默认所有
-	可选 `log`,`warn`,`error`（`debug`）在`log`等级才会显示
--
-
-## Methods
-
-- `log`
-
-```javascript
-logger.log('Hello world')
-```
-
-<img src="./static/images/log.png" width="300">
-
-- `warn`
-
-```javascript
-logger.warn('Hello world')
-```
-
-<img src="./static/images/warn.png" width="300">
-
-- `error`
-
-```javascript
-logger.error('Hello world')
-```
-
-<img src="./static/images/error.png" width="300">
-
-- `debug`
-
-可在`debug`时候使用，颜色随机以便区分区域
-
-```javascript
-logger.debug('Hello world')
-logger.debug('订单数据', {obj: 123})
-```
-
-<img src="./static/images/debug.png" width="600">
-
-- `server`
-
-需要收集到服务端的信息或错误
-
-> 增加对用户端的错误收集，因为不可触达
-
-```javascript
-logger.server(data)
-```
-
-## Example
+## 示例
 
 传统项目
 
@@ -111,6 +46,116 @@ this.$error('Hello world')
 this.$debug('title', 'Hello world') or this.debug('Hello world')
 logger.$server(data)
 ```
+
+## TODO
+
+- 收集错误和提升体验
+
+## 配置
+
+<table className="global-table">
+  <thead>
+    <tr>
+      <th>配置</th>
+      <th>类型</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>colored</td>
+      <td>Boolean</td>
+      <td>是否使用颜色，默认true</td>
+    </tr>
+    <tr>
+      <td>logLevel</td>
+      <td>String</td>
+      <td>log、 warn、 error（debug）在log等级才会显示，默认log</td>
+    </tr>
+    <tr>
+      <td>dateTemp</td>
+      <td>String</td>
+      <td>log的时间格式，默认HH:mm:SS，具体配置可参考<a href="http://momentjs.cn/docs/#/displaying/">moment</a>（部分支持）</td>
+    </tr>
+    <tr>
+      <td>debugTitleSize</td>
+      <td>Number</td>
+      <td>debug模式标题的字体大小，默认大小14</td>
+    </tr>
+    <tr>
+      <td>catchErrorUrl</td>
+      <td>String</td>
+      <td>server方法把错误信息传到后端的接口</td>
+    </tr>
+  </tbody>
+</table>
+
+## 方法
+
+#### log
+
+```javascript
+logger.log('Hello world')
+```
+
+<img src="./static/images/log.png" width="300">
+
+#### warn
+
+```javascript
+logger.warn('Hello world')
+```
+
+<img src="./static/images/warn.png" width="300">
+
+#### error
+
+```javascript
+logger.error('Hello world')
+```
+
+<img src="./static/images/error.png" width="300">
+
+#### debug
+
+可在`debug`时候使用，颜色随机以便区分区域
+
+```javascript
+logger.debug('Hello world')
+logger.debug('订单数据', {obj: 123})
+```
+
+<img src="./static/images/debug.png" width="600">
+
+#### server
+
+收集用户端的错误信息，可尽快知晓和定位错误
+
+客户端
+```javascript
+logger.server(data)
+```
+服务端
+```javascript
+// /api/catchError 为配置中的接口
+app.post('/api/catchError', function (req, res) {
+	var body = req.body
+	var logPath = path.join(__dirname, '/static/error.log')
+	var date = utils.moment.getCurrent('YYYY-MM-DD HH:mm:SS')
+	var content = [
+		`${'='.repeat(15)}${date}${'='.repeat(15)}\n`,
+		`Error: ${body.msg};\n`,
+		`ErrorFile: ${body.url};\n`,
+		`ErrorLine: ${body.line};\n`,
+		`ErrorColumn: ${body.col};\n`,
+		`${'='.repeat(49)}\n\n\n`,
+	]
+	fs.appendFileSync(logPath, content.join(''))
+	res.send({success: true})
+})
+```
+
+<img src="./static/images/errorLog.png" width="500">
 
 ----
 [woolson](http://woolson.github.io)
