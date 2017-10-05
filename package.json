@@ -1,6 +1,6 @@
 {
   "name": "@woolson/logger",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "colorful logger plugin",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,13 @@
   ],
   "author": "woolson",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woolson/logger.git"
+  },
+  "bugs": {
+    "url": "https://github.com/woolson/logger/issues"
+  },
   "devDependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.0",
